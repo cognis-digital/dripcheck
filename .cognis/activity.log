@@ -3,3 +3,4 @@
 2024-07-18T19:59:49  chore: in case of fire — commit, push, leave building
 2024-07-31T14:16:56  refactor(tests): improve the demo scenario
 2024-08-30T09:33:03  docs: ELI5 pass
+2024-09-12T16:50:10  build(cli): add a dry-run flag
