@@ -10,3 +10,4 @@
 2024-11-18T08:58:38  build(engine): reduce false positives on edge cases
 2024-12-19T15:15:45  chore: routine maintenance
 2024-12-31T10:32:52  refactor(format): add type hints to the public API
+2025-01-12T17:49:59  docs: clarify usage notes
