@@ -14,3 +14,4 @@
 2025-02-12T12:06:06  build(config): assert exit codes in tests
 2025-02-24T19:23:13  test: add edge case
 2025-03-09T14:40:20  refactor(fixtures): add --fail-on threshold handling
+2025-04-08T09:57:27  refactor: tidy internals
