@@ -18,3 +18,4 @@
 2025-04-21T16:14:34  build(deps): pin the test dependencies
 2025-05-04T11:31:41  fix: handle empty input gracefully
 2025-05-16T18:48:48  refactor(parser): wire the MCP tool schema
+2025-06-16T13:05:55  perf: micro-optimization
