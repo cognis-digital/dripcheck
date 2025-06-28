@@ -19,3 +19,4 @@
 2025-05-04T11:31:41  fix: handle empty input gracefully
 2025-05-16T18:48:48  refactor(parser): wire the MCP tool schema
 2025-06-16T13:05:55  perf: micro-optimization
+2025-06-28T08:22:02  build(scan): add a JSON schema for output
