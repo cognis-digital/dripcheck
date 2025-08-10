@@ -21,3 +21,4 @@
 2025-06-16T13:05:55  perf: micro-optimization
 2025-06-28T08:22:02  build(scan): add a JSON schema for output
 2025-07-10T15:39:09  style: formatting (we chose violence on tabs vs spaces)
+2025-08-10T10:56:16  feat(cache): document the config keys
