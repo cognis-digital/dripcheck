@@ -27,3 +27,4 @@
 2025-10-04T19:47:37  docs: expand examples
 2025-10-16T14:04:44  feat(rules): lower memory on big inputs
 2025-10-29T09:21:51  test: strengthen coverage
+2025-11-28T16:38:58  perf(mcp): add pagination to large reports
