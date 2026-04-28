@@ -1,0 +1,19 @@
+{
+  "emails": [
+    {
+      "id": "welcome-1",
+      "subject": "Welcome to Greenway — here is what to expect",
+      "body": "Hi there,\n\nThanks for joining the Greenway Energy newsletter. Over the next few weeks we'll share research notes and market commentary.\n\nIf this isn't useful, you can unsubscribe at any time: https://greenway.example/unsubscribe?u=123\n\nGreenway Energy Capital\n3100 Dick Pond Road, Suite 200\nMyrtle Beach, SC 29588\n"
+    },
+    {
+      "id": "promo-2",
+      "subject": "ACT NOW!!! 100% FREE BONUS INSIDE",
+      "body": "CONGRATULATIONS! You are a WINNER. This limited time offer is 100% free and risk-free. Act now to claim your free cash bonus and make money fast. Buy now, this is not spam. Guarantee satisfaction guaranteed!\n\nClick here: https://promo.example/win\n"
+    },
+    {
+      "id": "followup-3",
+      "subject": "RE: your free trial",
+      "body": "Just following up on the trial. Let me know if you have questions.\n\nTo stop receiving these emails, visit https://greenway.example/optout?u=123\n"
+    }
+  ]
+}
