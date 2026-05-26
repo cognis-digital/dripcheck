@@ -37,3 +37,4 @@
 2026-04-01T17:37:47  chore: feed the FOUNDRY
 2026-04-13T12:54:54  perf(core): tune severity weights
 2026-05-14T19:11:01  chore: IRONCLAD hardening pass
+2026-05-26T14:28:08  feat(docs): normalize unicode before matching
