@@ -1,2 +1,11 @@
-"""DRIPCHECK — Lint email sequences and drip campaigns for deliverability: SPF/DKIM/DMARC, link health, unsubscribe presence, and CAN-SPAM/GDPR compliance."""
-__version__ = "0.1.0"
+"""dripcheck — part of the Cognis Neural Suite."""
+try:  # re-export the tool's public API + identity from core
+    from dripcheck.core import *  # noqa: F401,F403
+except Exception:  # pragma: no cover
+    pass
+try:
+    from dripcheck.core import TOOL_NAME, TOOL_VERSION
+except Exception:  # pragma: no cover
+    TOOL_NAME = "dripcheck"
+    TOOL_VERSION = "0.1.0"
+__version__ = TOOL_VERSION
