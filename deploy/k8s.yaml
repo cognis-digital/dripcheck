@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: dripcheck, labels: { app: dripcheck } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: dripcheck } }
+  template:
+    metadata: { labels: { app: dripcheck } }
+    spec:
+      containers:
+        - name: dripcheck
+          image: ghcr.io/cognis-digital/dripcheck:latest
+          ports: [{ containerPort: 8000 }]
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits: { cpu: "500m", memory: "256Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: dripcheck }
+spec:
+  selector: { app: dripcheck }
+  ports: [{ port: 80, targetPort: 8000 }]
