@@ -16,7 +16,7 @@
 </div>
 
 ```bash
-pip install cognis-dripcheck
+pip install "git+https://github.com/cognis-digital/dripcheck.git"
 dripcheck scan .            # → prioritized findings in seconds
 ```
 
@@ -49,7 +49,7 @@ A pre-send CI gate — break the build if a campaign is missing an unsubscribe l
 ## Quick start
 
 ```bash
-pip install cognis-dripcheck
+pip install "git+https://github.com/cognis-digital/dripcheck.git"
 dripcheck --version
 dripcheck scan .                       # scan current project
 dripcheck scan . --format json         # machine-readable
