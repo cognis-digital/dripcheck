@@ -20,6 +20,12 @@ pip install "git+https://github.com/cognis-digital/dripcheck.git"
 dripcheck scan .            # → prioritized findings in seconds
 ```
 
+<!-- cognis:layman:start -->
+## What is this?
+
+dripcheck scans email campaigns and drip sequences before you send them, catching problems that cause emails to land in spam or get you in legal trouble. It checks each email for a working unsubscribe link, a physical mailing address (required by US law), spam trigger words in the subject line, and other common deliverability red flags. You point it at a JSON file containing your email sequence, and it gives you a prioritized list of issues to fix. It is built for marketers and developers who want to automate pre-send quality checks in their CI pipelines or just catch problems before they reach a prospect's inbox.
+<!-- cognis:layman:end -->
+
 ## Contents
 
 - [Why dripcheck?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
@@ -46,6 +52,42 @@ A pre-send CI gate — break the build if a campaign is missing an unsubscribe l
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="quick-start"></a>
+<!-- cognis:install:start -->
+## Install
+
+`dripcheck` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/dripcheck/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/dripcheck/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/dripcheck.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/dripcheck.git"  # uv
+pip install "git+https://github.com/cognis-digital/dripcheck.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/dripcheck.git
+cd dripcheck && pip install .
+```
+
+Then run:
+```sh
+dripcheck --help
+```
+<!-- cognis:install:end -->
+
 ## Quick start
 
 ```bash
