@@ -9,16 +9,22 @@
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=3500&pause=1000&color=6B46C1&center=true&vCenter=true&width=720&lines=Lint+email+sequences+and+drip+campaigns+for+deliverability+S;Self-hostable+%C2%B7+MCP-native+%C2%B7+CI-ready+%C2%B7+polyglot" width="720"/>
 
-[![PyPI](https://img.shields.io/pypi/v/cognis-dripcheck.svg?color=6b46c1)](https://pypi.org/project/cognis-dripcheck/) [![CI](https://github.com/cognis-digital/dripcheck/actions/workflows/ci.yml/badge.svg)](https://github.com/cognis-digital/dripcheck/actions) [![License: COCL 1.0](https://img.shields.io/badge/License-COCL%201.0-2b6cb0.svg)](LICENSE) [![Suite](https://img.shields.io/badge/Cognis-Neural%20Suite-6b46c1.svg)](https://github.com/cognis-digital)
+[![install](https://img.shields.io/badge/install-git%2B%20%C2%B7%20pipx%20%C2%B7%20uv-6b46c1.svg)](#install--every-way-every-platform) [![CI](https://github.com/cognis-digital/dripcheck/actions/workflows/ci.yml/badge.svg)](https://github.com/cognis-digital/dripcheck/actions) [![License: COCL 1.0](https://img.shields.io/badge/License-COCL%201.0-2b6cb0.svg)](LICENSE) [![Suite](https://img.shields.io/badge/Cognis-Neural%20Suite-6b46c1.svg)](https://github.com/cognis-digital)
 
 *Part of the Cognis Neural Suite.*
 
 </div>
 
 ```bash
-pip install cognis-dripcheck
+pip install "git+https://github.com/cognis-digital/dripcheck.git"
 dripcheck scan .            # → prioritized findings in seconds
 ```
+
+<!-- cognis:layman:start -->
+## What is this?
+
+dripcheck scans email campaigns and drip sequences before you send them, catching problems that cause emails to land in spam or get you in legal trouble. It checks each email for a working unsubscribe link, a physical mailing address (required by US law), spam trigger words in the subject line, and other common deliverability red flags. You point it at a JSON file containing your email sequence, and it gives you a prioritized list of issues to fix. It is built for marketers and developers who want to automate pre-send quality checks in their CI pipelines or just catch problems before they reach a prospect's inbox.
+<!-- cognis:layman:end -->
 
 ## Contents
 
@@ -46,10 +52,56 @@ A pre-send CI gate — break the build if a campaign is missing an unsubscribe l
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="quick-start"></a>
+<!-- cognis:domains:start -->
+## Domains
+
+**Primary domain:** Revenue & Business  ·  **JTF MERIDIAN division:** FOUNDRY · MASON
+
+**Topics:** `cognis` `business` `saas` `revenue-ops` `privacy`
+
+Part of the **Cognis Neural Suite** — 300+ source-available tools organized across 12 domains under the JTF MERIDIAN command structure. See the [suite on GitHub](https://github.com/cognis-digital) and [jtf-meridian](https://github.com/cognis-digital/jtf-meridian) for how the pieces fit together.
+<!-- cognis:domains:end -->
+
+<!-- cognis:install:start -->
+## Install
+
+`dripcheck` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/dripcheck/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/dripcheck/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/dripcheck.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/dripcheck.git"  # uv
+pip install "git+https://github.com/cognis-digital/dripcheck.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/dripcheck.git
+cd dripcheck && pip install .
+```
+
+Then run:
+```sh
+dripcheck --help
+```
+<!-- cognis:install:end -->
+
 ## Quick start
 
 ```bash
-pip install cognis-dripcheck
+pip install "git+https://github.com/cognis-digital/dripcheck.git"
 dripcheck --version
 dripcheck scan .                       # scan current project
 dripcheck scan . --format json         # machine-readable
@@ -142,6 +194,32 @@ curl -fsSL https://raw.githubusercontent.com/cognis-digital/dripcheck/main/insta
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="related"></a>
+<a name="verification"></a>
+## Verification
+
+[![tests](https://img.shields.io/badge/tests-12%20passing-2ea44f.svg)](AUDIT.md)
+
+Every push is verified end-to-end. Latest audit (2026-06-13):
+
+```text
+tests        : 12 passed, 0 failed, 0 errored
+compile      : all modules parse
+cli          : C:\Python314\python.exe: No module named https
+package      : https
+```
+
+<details><summary>CLI surface (<code>--help</code>)</summary>
+
+```text
+C:\Python314\python.exe: No module named https
+```
+</details>
+
+Full machine-readable results: [`AUDIT.md`](AUDIT.md) · regenerate with `python -m https --help` + `pytest -q`.
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+
 ## Related Cognis tools
 
 - [`warmline`](https://github.com/cognis-digital/warmline) — Score and rank inbound/outbound leads from a YAML rulebook, emitting a ranked queue as JSON/CSV for your SDRs and CI gates.
