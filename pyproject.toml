@@ -34,3 +34,6 @@ dripcheck = "dripcheck.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["dripcheck"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
