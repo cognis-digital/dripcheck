@@ -130,8 +130,17 @@ def main(argv: Optional[List[str]] = None) -> int:
     except FileNotFoundError:
         print(f"{TOOL_NAME}: error: file not found: {args.path}", file=sys.stderr)
         return 2
+    except IsADirectoryError:
+        print(f"{TOOL_NAME}: error: path is a directory, not a file: {args.path}", file=sys.stderr)
+        return 2
+    except PermissionError:
+        print(f"{TOOL_NAME}: error: permission denied: {args.path}", file=sys.stderr)
+        return 2
     except (ValueError, json.JSONDecodeError) as exc:
         print(f"{TOOL_NAME}: error: could not parse sequence: {exc}", file=sys.stderr)
+        return 2
+    except OSError as exc:
+        print(f"{TOOL_NAME}: error: could not read file: {exc}", file=sys.stderr)
         return 2
 
     report = lint_sequence(emails)

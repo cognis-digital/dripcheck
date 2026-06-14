@@ -223,9 +223,10 @@ def _caps_ratio(text: str) -> float:
 
 def lint_email(email: Dict[str, Any], index: int = 0) -> EmailReport:
     """Lint a single email dict and return its :class:`EmailReport`."""
+    if not isinstance(email, dict):
+        raise TypeError(f"Email at index {index} must be a dict, got {type(email).__name__}.")
     email_id = str(email.get("id") or f"email-{index + 1}")
     subject = (email.get("subject") or "").strip()
-    body = email.get("body", "") or ""
     text = _searchable_text(email)
     report = EmailReport(email_id=email_id, subject=subject)
     add = report.findings.append
@@ -387,13 +388,25 @@ def _coerce_emails(data: Any) -> List[Dict[str, Any]]:
     if isinstance(data, list):
         items = data
     elif isinstance(data, dict):
-        items = data.get("emails") or data.get("sequence") or [data]
+        # Prefer an explicit "emails" or "sequence" array; fall back to
+        # treating the whole object as a single email.
+        candidate = data.get("emails") if data.get("emails") is not None else data.get("sequence")
+        if candidate is not None:
+            if not isinstance(candidate, list):
+                raise ValueError(
+                    f"'emails'/'sequence' key must be a JSON array, got {type(candidate).__name__}."
+                )
+            items = candidate
+        else:
+            items = [data]
     else:
         raise ValueError("Unsupported sequence format: expected list or object.")
     out: List[Dict[str, Any]] = []
-    for item in items:
+    for i, item in enumerate(items):
         if not isinstance(item, dict):
-            raise ValueError("Each email must be a JSON object.")
+            raise ValueError(
+                f"Each email must be a JSON object; item at index {i} is {type(item).__name__}."
+            )
         out.append(item)
     return out
 
@@ -403,12 +416,40 @@ def load_sequence(path: str) -> List[Dict[str, Any]]:
 
     The file may be either a JSON array of email objects, or an object with
     an ``emails`` (or ``sequence``) array.
+
+    Raises
+    ------
+    FileNotFoundError
+        If *path* does not exist.
+    PermissionError
+        If the process lacks read access to *path*.
+    IsADirectoryError
+        If *path* points to a directory rather than a file.
+    json.JSONDecodeError
+        If the file is not valid JSON.
+    ValueError
+        If the JSON structure is not a recognised sequence format.
     """
+    import os as _os
+    if _os.path.isdir(path):
+        raise IsADirectoryError(f"Path is a directory, not a file: {path}")
     with open(path, "r", encoding="utf-8") as fh:
         data = json.load(fh)
     return _coerce_emails(data)
 
 
 def loads_sequence(text: str) -> List[Dict[str, Any]]:
-    """Parse a sequence from a JSON string."""
+    """Parse a sequence from a JSON string.
+
+    Raises
+    ------
+    ValueError
+        If *text* is empty or whitespace-only.
+    json.JSONDecodeError
+        If *text* is not valid JSON.
+    ValueError
+        If the JSON structure is not a recognised sequence format.
+    """
+    if not text or not text.strip():
+        raise ValueError("Input is empty; expected a JSON email sequence.")
     return _coerce_emails(json.loads(text))

@@ -1,6 +1,10 @@
-"""DRIPCHECK MCP server — exposes scan() as an MCP tool for Cognis.Studio."""
+"""DRIPCHECK MCP server — exposes lint() as an MCP tool for Cognis.Studio."""
 from __future__ import annotations
-from dripcheck.core import scan, to_json
+
+import json
+
+from dripcheck.core import lint_sequence, loads_sequence
+
 
 def serve() -> int:
     """Start an MCP stdio server. Requires the optional 'mcp' extra:
@@ -16,7 +20,12 @@ def serve() -> int:
     @app.tool()
     def dripcheck_scan(target: str) -> str:
         """Lint email sequences and drip campaigns for deliverability: SPF/DKIM/DMARC, link health, unsubscribe presence, and CAN-SPAM/GDPR compliance.. Returns JSON findings."""
-        return to_json(scan(target))
+        try:
+            emails = loads_sequence(target)
+        except (ValueError, json.JSONDecodeError) as exc:
+            return json.dumps({"error": str(exc)})
+        report = lint_sequence(emails)
+        return json.dumps(report.to_dict(), indent=2)
 
     app.run()
     return 0
