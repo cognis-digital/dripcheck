@@ -21,10 +21,15 @@ Checks implemented (real logic, not stubs):
 """
 from __future__ import annotations
 
+import csv
+import io
 import json
 import re
 from dataclasses import dataclass, field, asdict
 from typing import Any, Dict, Iterable, List, Optional
+
+TOOL_NAME = "dripcheck"
+TOOL_VERSION = "0.7.9"
 
 SEVERITY_ERROR = "error"
 SEVERITY_WARNING = "warning"
@@ -58,16 +63,29 @@ UNSUBSCRIBE_PATTERNS = [
     r"remove me",
 ]
 
-# US-style street address heuristic: number + street word, or PO box.
+# Street address heuristic: number + street word (US + common international),
+# or PO box. Covers EN/FR/DE/ES/IT keywords so non-US footers are recognised.
 _STREET_WORDS = (
     r"(st|street|ave|avenue|blvd|boulevard|rd|road|ln|lane|dr|drive|"
-    r"ct|court|way|pl|place|suite|ste|floor|fl|unit|apt|hwy|highway|pkwy|parkway)"
+    r"ct|court|way|pl|place|suite|ste|floor|fl|unit|apt|hwy|highway|pkwy|parkway|"
+    # International street keywords (number-then-word in many countries).
+    r"rue|avenue|boulevard|impasse|allee|allée|"        # French
+    r"strasse|straße|str|gasse|weg|platz|allee|"          # German
+    r"calle|avenida|paseo|plaza|carrer|"                       # Spanish/Catalan
+    r"via|viale|piazza|corso|strada)"                          # Italian
 )
 _ADDRESS_PATTERNS = [
     re.compile(r"\b\d{1,6}\s+[\w.\- ]{2,40}\b" + _STREET_WORDS + r"\b", re.I),
+    # "Rue de la Loi 12" / "Bahnhofstrasse 5" — word-then-number ordering.
+    re.compile(r"\b" + _STREET_WORDS + r"\b[\w.\- ]{2,40}\s+\d{1,6}\b", re.I),
     re.compile(r"\bp\.?\s*o\.?\s*box\s+\d+", re.I),
     # City, ST ZIP  (e.g. "Austin, TX 78701")
     re.compile(r"\b[A-Z][A-Za-z.\- ]+,\s*[A-Z]{2}\s+\d{5}(?:-\d{4})?\b"),
+    # Postal code + city + country tail (EU-style), e.g.
+    # "1040 Brussels, Belgium" or "Berlin, Germany" with a 4-5 digit code.
+    re.compile(
+        r"\b\d{4,5}\s+[A-Z][A-Za-z.\- ]+,\s*[A-Z][A-Za-z]+\b"
+    ),
 ]
 
 _LINK_RE = re.compile(r"https?://[^\s)\"'>]+", re.I)
@@ -412,3 +430,106 @@ def load_sequence(path: str) -> List[Dict[str, Any]]:
 def loads_sequence(text: str) -> List[Dict[str, Any]]:
     """Parse a sequence from a JSON string."""
     return _coerce_emails(json.loads(text))
+
+
+# --- exporters: SARIF + CSV -------------------------------------------------
+
+# SARIF maps dripcheck severities onto its three levels.
+_SARIF_LEVEL = {
+    SEVERITY_ERROR: "error",
+    SEVERITY_WARNING: "warning",
+    SEVERITY_INFO: "note",
+}
+
+
+def to_sarif(report: "SequenceReport") -> Dict[str, Any]:
+    """Render a :class:`SequenceReport` as a SARIF 2.1.0 log.
+
+    SARIF (Static Analysis Results Interchange Format) is the format GitHub
+    code-scanning, Azure DevOps, and many CI dashboards ingest natively, so a
+    ``dripcheck lint ... --format sarif`` artifact surfaces deliverability
+    findings as annotations right on the pull request.
+
+    Each finding becomes a SARIF *result*; its ``code`` is registered as a
+    reusable *rule* so dashboards can group and de-duplicate over time. The
+    email id (or ``sequence``) is recorded as a logical location so reviewers
+    can tell which message in the drip tripped the rule.
+    """
+    rules: "Dict[str, Dict[str, Any]]" = {}
+    results: List[Dict[str, Any]] = []
+
+    def _add(f: Finding) -> None:
+        if f.code not in rules:
+            rules[f.code] = {
+                "id": f.code,
+                "name": "".join(p.capitalize() for p in f.code.split("-")),
+                "shortDescription": {"text": f.message[:120]},
+                "defaultConfiguration": {"level": _SARIF_LEVEL.get(f.severity, "note")},
+            }
+        loc = f.email_id or "sequence"
+        result: Dict[str, Any] = {
+            "ruleId": f.code,
+            "level": _SARIF_LEVEL.get(f.severity, "note"),
+            "message": {"text": f.message + (f"\n{f.detail}" if f.detail else "")},
+            "locations": [{
+                "logicalLocations": [{"name": loc, "kind": "email"}],
+            }],
+        }
+        results.append(result)
+
+    for f in report.sequence_findings:
+        _add(f)
+    for er in report.emails:
+        for f in er.findings:
+            _add(f)
+
+    return {
+        "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+        "version": "2.1.0",
+        "runs": [{
+            "tool": {
+                "driver": {
+                    "name": TOOL_NAME,
+                    "version": TOOL_VERSION,
+                    "informationUri": "https://github.com/cognis-digital/dripcheck",
+                    "rules": list(rules.values()),
+                }
+            },
+            "results": results,
+        }],
+    }
+
+
+_CSV_FIELDS = ["email_id", "subject", "severity", "code", "message", "detail"]
+
+
+def to_csv(report: "SequenceReport") -> str:
+    """Render every finding as a CSV row (header + one row per finding).
+
+    Handy for triage in a spreadsheet or for diffing two runs. Sequence-level
+    findings use an ``email_id`` of ``sequence`` and an empty subject.
+    """
+    subjects = {er.email_id: er.subject for er in report.emails}
+    buf = io.StringIO()
+    writer = csv.DictWriter(buf, fieldnames=_CSV_FIELDS, lineterminator="\n")
+    writer.writeheader()
+    for f in report.sequence_findings:
+        writer.writerow({
+            "email_id": f.email_id or "sequence",
+            "subject": "",
+            "severity": f.severity,
+            "code": f.code,
+            "message": f.message,
+            "detail": f.detail or "",
+        })
+    for er in report.emails:
+        for f in er.findings:
+            writer.writerow({
+                "email_id": f.email_id or er.email_id,
+                "subject": subjects.get(f.email_id or er.email_id, er.subject),
+                "severity": f.severity,
+                "code": f.code,
+                "message": f.message,
+                "detail": f.detail or "",
+            })
+    return buf.getvalue()

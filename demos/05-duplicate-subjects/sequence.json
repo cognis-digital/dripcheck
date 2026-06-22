@@ -1,0 +1,19 @@
+{
+  "emails": [
+    {
+      "id": "nurture-1",
+      "subject": "Your weekly market note",
+      "body": "Hi {{first_name}},\n\nThis week energy names led on the back of refinery outages. Full breakdown in the dashboard.\n\n— Greenway Research\n\nUnsubscribe: https://greenway.example/u/771\nGreenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588"
+    },
+    {
+      "id": "nurture-2",
+      "subject": "Your weekly market note",
+      "body": "Hi {{first_name}},\n\nNatural gas storage came in light again. We trimmed two positions and added one. Details inside.\n\n— Greenway Research\n\nUnsubscribe: https://greenway.example/u/771\nGreenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588"
+    },
+    {
+      "id": "nurture-3",
+      "subject": "Your weekly market note",
+      "body": "Hi {{first_name}},\n\nQuiet week overall. We're holding the core and watching the Fed meeting next Wednesday.\n\n— Greenway Research\n\nUnsubscribe: https://greenway.example/u/771\nGreenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "emails": [
+    {
+      "id": "eu-1",
+      "subject": "Your subscription is confirmed",
+      "body": "Hello,\n\nThanks for confirming your subscription to the EnergyEU briefing. You're receiving this because you opted in on our website on the date shown in your account.\n\nWe only use your email to send this briefing. You can opt-out at any time, and you can manage your email preferences from the link below.\n\n— EnergyEU\n\nManage your preferences or opt-out: https://energyeu.example/preferences?id=2204\nEnergyEU SARL, 12 Rue de la Loi, 1040 Brussels, Belgium"
+    },
+    {
+      "id": "eu-2",
+      "subject": "Briefing #1: the week in European power markets",
+      "body": "Hello,\n\nThis week: German day-ahead prices eased as wind output recovered, while French nuclear availability held steady.\n\nFull charts are in the member area.\n\n— EnergyEU\n\nTo stop receiving this, unsubscribe here: https://energyeu.example/unsubscribe?id=2204\nEnergyEU SARL, 12 Rue de la Loi, 1040 Brussels, Belgium"
+    }
+  ]
+}

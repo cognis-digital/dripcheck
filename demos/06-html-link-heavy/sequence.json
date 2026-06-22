@@ -1,0 +1,14 @@
+{
+  "emails": [
+    {
+      "id": "digest-1",
+      "subject": "This week's links",
+      "html": "<html><body><p>Hi,</p><ul><li><a href=\"https://news.example/a1\">Story one</a></li><li><a href=\"https://news.example/a2\">Story two</a></li><li><a href=\"https://news.example/a3\">Story three</a></li></ul><p><a href=\"https://greenway.example/unsubscribe?u=991\">unsubscribe</a> &middot; Greenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588</p></body></html>"
+    },
+    {
+      "id": "digest-2",
+      "subject": "Resource roundup",
+      "html": "<html><body><a href=\"https://x.example/1\">1</a> <a href=\"https://x.example/2\">2</a> <a href=\"https://x.example/3\">3</a> <a href=\"https://x.example/4\">4</a> <a href=\"https://x.example/5\">5</a> <a href=\"https://x.example/6\">6</a> <a href=\"https://x.example/7\">7</a> <a href=\"https://x.example/8\">8</a> <a href=\"https://x.example/9\">9</a> <a href=\"https://x.example/10\">10</a> <a href=\"https://x.example/11\">11</a> <a href=\"https://x.example/12\">12</a> <a href=\"https://greenway.example/unsubscribe?u=991\">unsubscribe</a> Greenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588</body></html>"
+    }
+  ]
+}

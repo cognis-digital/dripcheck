@@ -36,7 +36,7 @@
 
 pip install cognis-dripcheck
 
-dripcheck scan .            # → prioritized findings in seconds
+dripcheck lint sequence.json   # → prioritized findings in seconds
 
 ```
 
@@ -59,15 +59,38 @@ dripcheck scan .            # → prioritized findings in seconds
    cat sequence.json | dripcheck lint -
    ```
 
-4. **Read the output.** Add `--format json` for machine-readable findings:
+4. **Read the output.** Pick the format your workflow speaks — `table`
+   (default), `json`, `sarif` (GitHub code-scanning), or `csv`:
    ```bash
-   dripcheck lint sequence.json --format json > drip.json
+   dripcheck lint sequence.json --format json  > drip.json
+   dripcheck lint sequence.json --format sarif > drip.sarif   # upload to code-scanning
+   dripcheck lint sequence.json --format csv   > drip.csv     # triage in a spreadsheet
    ```
 
 5. **Wire it into CI** — treat warnings as failures so deliverability regressions block release:
    ```bash
    dripcheck lint sequence.json --strict || exit 1
    ```
+
+6. **Explore the [demos](demos/).** Each `demos/<NN-name>/` folder pairs a
+   real-format `sequence.json` with a `SCENARIO.md` (where the data came from,
+   the exact command, and how to act on the findings):
+   ```bash
+   python -m dripcheck lint demos/02-clean-onboarding/sequence.json   # passes
+   python -m dripcheck lint demos/03-cold-outreach-saas/sequence.json # fails
+   ```
+
+   | Demo | What it shows |
+   |---|---|
+   | `01-basic` | A small mixed cold/drip sequence with seeded problems |
+   | `02-clean-onboarding` | A fully compliant onboarding drip — the green baseline |
+   | `03-cold-outreach-saas` | B2B cold outreach: fake `RE:`/`FWD:`, missing footers |
+   | `04-promo-spam-traps` | A promo that maxes out spam-trigger signals |
+   | `05-duplicate-subjects` | Clean emails but a sequence-level duplicate-subject smell (`--strict`) |
+   | `06-html-link-heavy` | HTML link-roundup parsing + too-many-links / low-text-ratio |
+   | `07-gdpr-eu-newsletter` | EU/GDPR send with a recognised non-US postal address |
+   | `08-stdin-ci-gate` | Piping from stdin and using the exit code as a CI gate |
+   | `09-broken-edge-cases` | Missing subject, empty body, oversized subject |
 
 ## Contents
 
@@ -101,13 +124,19 @@ A pre-send CI gate — break the build if a campaign is missing an unsubscribe l
 
 
 
-- ✅ Lint Email
+- ✅ CAN-SPAM checks: unsubscribe/opt-out mechanism + physical postal address
 
-- ✅ Lint Sequence
+- ✅ International address detection (US `City, ST ZIP` **and** EU/FR/DE/ES/IT footers)
 
-- ✅ Load Sequence
+- ✅ Spam-trigger word density (subject + body), ALL-CAPS / `!!!`·`$$$` punctuation
 
-- ✅ Loads Sequence
+- ✅ Deceptive `RE:`/`FWD:` subjects, missing/oversized subjects, empty bodies
+
+- ✅ HTML-aware link checks: too-many-links + low text-to-link ratio
+
+- ✅ Sequence-level checks (e.g. duplicate subjects across the drip)
+
+- ✅ Output as **table · JSON · SARIF · CSV**; `--strict` CI gate via exit code
 
 - ✅ Runs on Linux/macOS/Windows · Docker · devcontainer
 
@@ -131,11 +160,13 @@ pip install cognis-dripcheck
 
 dripcheck --version
 
-dripcheck scan .                       # scan current project
+dripcheck lint sequence.json                  # lint a drip sequence
 
-dripcheck scan . --format json         # machine-readable
+dripcheck lint sequence.json --format json    # machine-readable
 
-dripcheck scan . --fail-on high        # CI gate (non-zero exit)
+dripcheck lint sequence.json --format sarif   # GitHub code-scanning
+
+dripcheck lint sequence.json --strict         # CI gate (non-zero exit)
 
 ```
 
@@ -153,15 +184,22 @@ dripcheck scan . --fail-on high        # CI gate (non-zero exit)
 
 ```text
 
-$ dripcheck scan .
+$ dripcheck lint demos/03-cold-outreach-saas/sequence.json
 
-  [HIGH    ] DRI-001  example finding             (./src/app.py)
+DRIPCHECK report
+============================================================
 
-  [MEDIUM  ] DRI-002  another signal              (./config.yaml)
+[cold-1] quick question about your data pipeline
+  ERROR no-unsubscribe: No unsubscribe/opt-out mechanism found (CAN-SPAM 15 U.S.C. 7704).
+  ERROR no-physical-address: No valid physical postal address detected (CAN-SPAM requires one).
 
+[cold-2] RE: quick question about your data pipeline
+  WARN  deceptive-subject: Subject starts with RE:/FW: which can be deceptive for a cold send.
+  ERROR no-unsubscribe: No unsubscribe/opt-out mechanism found (CAN-SPAM 15 U.S.C. 7704).
+  ...
 
-
-  2 findings · risk score 5 · 38ms
+------------------------------------------------------------
+emails=3  errors=5  warnings=2  FAIL
 
 ```
 
@@ -201,7 +239,7 @@ flowchart LR
 
 - **MCP server** — `dripcheck mcp` (Claude Desktop, Cursor, Cognis.Studio, [uncensored-fleet](https://github.com/cognis-digital/uncensored-fleet))
 
-- **OpenAI-compatible / JSON** — pipe `dripcheck scan . --format json` into any agent or LLM
+- **OpenAI-compatible / JSON** — pipe `dripcheck lint sequence.json --format json` into any agent or LLM
 
 - **LangChain · CrewAI · AutoGen · LlamaIndex** — wrap the CLI/JSON as a tool in one line
 

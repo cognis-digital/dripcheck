@@ -27,6 +27,8 @@ from .core import (
     lint_sequence,
     load_sequence,
     loads_sequence,
+    to_sarif,
+    to_csv,
     SEVERITY_ERROR,
     SEVERITY_WARNING,
     SEVERITY_INFO,
@@ -107,8 +109,8 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to a JSON sequence file, or '-' to read from stdin.",
     )
     lint.add_argument(
-        "--format", choices=["table", "json"], default="table",
-        help="Output format (default: table).",
+        "--format", choices=["table", "json", "sarif", "csv"], default="table",
+        help="Output format: table, json, sarif (GitHub code-scanning), or csv (default: table).",
     )
     lint.add_argument(
         "--strict", action="store_true",
@@ -138,6 +140,10 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if args.format == "json":
         print(json.dumps(report.to_dict(), indent=2))
+    elif args.format == "sarif":
+        print(json.dumps(to_sarif(report), indent=2))
+    elif args.format == "csv":
+        sys.stdout.write(to_csv(report))
     else:
         print(_render_table(report))
 

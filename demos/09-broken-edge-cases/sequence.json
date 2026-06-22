@@ -1,0 +1,19 @@
+{
+  "emails": [
+    {
+      "id": "missing-subject",
+      "subject": "",
+      "body": "Hi there, just checking in. You can unsubscribe at https://greenway.example/u/12. Greenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588"
+    },
+    {
+      "id": "empty-body",
+      "subject": "(no content)",
+      "body": "tbd"
+    },
+    {
+      "id": "long-subject",
+      "subject": "A genuinely enormous subject line that keeps going well past what any mail client will ever show in the inbox preview pane and then keeps going",
+      "body": "Hi there, real content goes here so the body is not flagged as empty. You can unsubscribe at https://greenway.example/u/12. Greenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588"
+    }
+  ]
+}

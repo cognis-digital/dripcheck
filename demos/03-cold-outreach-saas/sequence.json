@@ -1,0 +1,19 @@
+{
+  "emails": [
+    {
+      "id": "cold-1",
+      "subject": "quick question about your data pipeline",
+      "body": "Hi {{first_name}},\n\nI lead partnerships at Acme and noticed your team is hiring data engineers. Usually that means the warehouse is growing faster than the tooling around it.\n\nWe help teams cut ETL maintenance by about a third. Worth a 15-minute call next week?\n\n— Dana\n\nIf you'd rather not hear from me, just reply 'no thanks' and I'll close it out."
+    },
+    {
+      "id": "cold-2",
+      "subject": "RE: quick question about your data pipeline",
+      "body": "Hi {{first_name}},\n\nBumping this in case it slipped. Happy to send a one-pager instead of a call if that's easier.\n\n— Dana"
+    },
+    {
+      "id": "cold-3",
+      "subject": "FWD: case study you might like",
+      "body": "Hi {{first_name}},\n\nLast note from me — here is a short case study from a team about your size. If now's not the time, no worries and I'll stop here.\n\n— Dana\n\nUnsubscribe: https://acme.example/unsub?c=4471"
+    }
+  ]
+}

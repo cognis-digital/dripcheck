@@ -1,0 +1,19 @@
+{
+  "emails": [
+    {
+      "id": "onboard-1",
+      "subject": "Welcome to Greenway — your first steps",
+      "body": "Hi {{first_name}},\n\nThanks for creating your Greenway account. Over the next week we'll walk you through importing your first portfolio and setting up alerts.\n\nToday: log in and connect a brokerage in Settings > Connections. It takes about two minutes.\n\nReply to this email if anything looks off — a real person reads it.\n\n— The Greenway team\n\nYou can update your email preferences or unsubscribe at https://greenway.example/prefs?u=8842\nGreenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588"
+    },
+    {
+      "id": "onboard-2",
+      "subject": "How to read your first portfolio report",
+      "body": "Hi {{first_name}},\n\nNow that your account is connected, here is how to make sense of the daily report: the top card shows net exposure, the table below ranks positions by contribution.\n\nWatch the 90-second walkthrough in the help center when you have a moment.\n\n— The Greenway team\n\nTo stop receiving onboarding tips, unsubscribe at https://greenway.example/prefs?u=8842\nGreenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588"
+    },
+    {
+      "id": "onboard-3",
+      "subject": "Setting price and risk alerts that actually help",
+      "body": "Hi {{first_name}},\n\nLast tip for this week: alerts. Most people start with a single drawdown alert at -8% and a weekly summary. You can always add more later.\n\nThat's it for onboarding. We'll switch you to the regular weekly note from here.\n\n— The Greenway team\n\nManage your email preferences or unsubscribe: https://greenway.example/prefs?u=8842\nGreenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588"
+    }
+  ]
+}

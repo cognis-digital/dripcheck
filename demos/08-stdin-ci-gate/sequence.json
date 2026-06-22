@@ -1,0 +1,9 @@
+{
+  "emails": [
+    {
+      "id": "release-note",
+      "subject": "Greenway 2.4 is live — what changed",
+      "body": "Hi {{first_name}},\n\nVersion 2.4 ships faster reports and a redesigned alerts page. Highlights:\n\n- Reports render about 3x faster on large portfolios\n- Alerts now support percentage and dollar thresholds\n- Fixed the timezone bug in the daily digest\n\nFull notes are in the changelog.\n\n— The Greenway team\n\nUnsubscribe or manage preferences: https://greenway.example/prefs?u=5560\nGreenway Energy Capital, 3100 Dick Pond Road, Suite 200, Myrtle Beach, SC 29588"
+    }
+  ]
+}
