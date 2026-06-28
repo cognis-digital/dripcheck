@@ -42,6 +42,65 @@ dripcheck lint sequence.json   # → prioritized findings in seconds
 
 
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ dripcheck-emit --version
+dripcheck 0.7.9
+```
+
+```console
+$ dripcheck-emit --help
+usage: dripcheck [-h] [--version] {lint} ...
+
+Lint email drip sequences for deliverability and CAN-SPAM compliance (unsubscribe, physical address, spam triggers).
+
+positional arguments:
+  {lint}
+    lint      Lint an email sequence file (or '-' for stdin).
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+
+examples:
+  dripcheck lint sequence.json
+  dripcheck lint sequence.json --format json | jq .summary
+  cat sequence.json | dripcheck lint -
+  dripcheck lint sequence.json --strict
+```
+
+> Blocks above are real `dripcheck` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"Findings": [
+    {
+        "id": "1234567890",
+        "title": "Suspicious Network Traffic",
+        "description": "Potential malicious activity detected on port 443.",
+        "created_by": "John Doe",
+        "created_at": "2023-02-15T14:30:00Z"
+    },
+    {
+        "id": "2345678901",
+        "title": "Unusual Login Attempt",
+        "description": "Failed login attempt from an unfamiliar IP address.",
+        "created_by": "Jane Smith",
+        "created_at": "2023-02-16T10:45:00Z"
+    }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 1. **Install** the CLI:

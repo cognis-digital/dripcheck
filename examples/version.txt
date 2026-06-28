@@ -1,0 +1,3 @@
+$ dripcheck-emit --version
+
+dripcheck 0.7.9

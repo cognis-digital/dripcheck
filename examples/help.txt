@@ -1,0 +1,19 @@
+$ dripcheck-emit --help
+
+usage: dripcheck [-h] [--version] {lint} ...
+
+Lint email drip sequences for deliverability and CAN-SPAM compliance (unsubscribe, physical address, spam triggers).
+
+positional arguments:
+  {lint}
+    lint      Lint an email sequence file (or '-' for stdin).
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+
+examples:
+  dripcheck lint sequence.json
+  dripcheck lint sequence.json --format json | jq .summary
+  cat sequence.json | dripcheck lint -
+  dripcheck lint sequence.json --strict
